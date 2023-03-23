@@ -1,35 +1,42 @@
 #define ORDER 32
 #define SAMPLING_RATE 100
+#define SIGNAL_PIN 33
+#define OUTPUT_PIN 34
 
-double taps[ORDER];
+double h[ORDER];
 
-double input[ORDER];
+double x[ORDER];
 double output = 0.0;
 
 void setup() {
   for (int i = 0; i < ORDER; i++) {
-    input[i] = 0.0;
+    x[i] = 0.0;
   }
 }
 
 void loop() {
-  double x = analogRead(A0);
+  filterV1();
+}
+
+void filterV1() {
+
+}
+
+void filterV2() {
+  double adcValue = analogRead(SIGNAL_PIN);
   
-  // Actualización del buffer de entrada
+  // Update the input buffer, shift to the right
   for (int i = ORDER - 1; i > 0; i--) {
-    input[i] = input[i - 1];
+    x[i] = x[i - 1];
   }
-  input[0] = x;
+  x[0] = adcValue;
   
-  // Cálculo de la salida del filtro FIR
+  // Calculating the output of the filter
   output = 0.0;
   for (int i = 0; i < ORDER; i++) {
-    output += taps[i] * input[i];
+    output += h[i] * x[i];
   }
   
-  // Escritura de la salida en la salida analógica
-  analogWrite(A1, output);
-  
-  // Retardo para controlar la frecuencia de muestreo
-  delay(10);
+  analogWrite(OUTPUT_PIN, output);
+  delay(SAMPLING_RATE);
 }
