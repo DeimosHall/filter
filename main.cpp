@@ -21,8 +21,8 @@ double h[ORDER] = {32.0, 31.0, 30.0, 29.0, 28.0,
 double x[ORDER];
 double output = 0.0;
 
-// The filter function
 void filter();
+void printX();
 
 int main() {
     // Initialize the input buffer with zeros
@@ -31,9 +31,9 @@ int main() {
     }
 
     // Apply the filter to a test signal
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 2; i++) {
         filter();
-        cout << output << '\n';
+        cout << "Output: " << output << '\n';
     }
 
     return 0;
@@ -50,9 +50,21 @@ void filter() {
     }
     x[0] = adcValue;
 
+    printX();
+
     // Calculating the output of the filter
     output = 0.0;
     for (int i = 0; i < ORDER; i++) {
+        cout << "h[" << i << "] = " << h[i] << ", ";
+        cout << "x[" << i << "] = " << x[i] << '\n';
         output += h[i] * x[i];
   }
+}
+
+void printX() {
+    cout << "Input = ";
+    for (int i = 0; i < ORDER; i++) {
+        cout << x[i];
+    }
+    cout << '\n';
 }
