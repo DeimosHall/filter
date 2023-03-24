@@ -1,16 +1,18 @@
 #define SIGNAL_PIN 33
-#define OUTPUT_PIN 34
+#define OUTPUT_PIN 25
 #define ORDER 32
 #define SAMPLING_RATE 25 // microseconds
 
 // The filter coefficients
-double h[ORDER];
-double x[ORDER];
-double output = 0.0;
-double adcValue = 0.0;
+float h[ORDER];
+float x[ORDER];
+float output = 0.0;
+float adcValue = 0.0;
 
 void setup() {
   Serial.begin(115200);
+  pinMode(SIGNAL_PIN, INPUT);
+  pinMode(OUTPUT_PIN, OUTPUT);
 
   // Initialize the input buffer with zeros
   for (int i = 0; i < ORDER; i++) {
