@@ -1,42 +1,46 @@
-#define ORDER 32
-#define SAMPLING_RATE 100
 #define SIGNAL_PIN 33
 #define OUTPUT_PIN 34
+#define ORDER 32
+#define SAMPLING_RATE 25 // microseconds
 
+// The filter coefficients
 double h[ORDER];
-
 double x[ORDER];
 double output = 0.0;
+double adcValue = 0.0;
 
 void setup() {
+  Serial.begin(115200);
+
+  // Initialize the input buffer with zeros
   for (int i = 0; i < ORDER; i++) {
-    x[i] = 0.0;
+      x[i] = 0.0;
+  }
+
+  for (int i = 0; i < ORDER; i++) {
+      h[i] = i + 1.0;
   }
 }
 
 void loop() {
-  filterV1();
+  filter();
+  delayMicroseconds(SAMPLING_RATE);
 }
 
-void filterV1() {
+void filter() {
+  adcValue = analogRead(SIGNAL_PIN);
 
-}
-
-void filterV2() {
-  double adcValue = analogRead(SIGNAL_PIN);
-  
   // Update the input buffer, shift to the right
   for (int i = ORDER - 1; i > 0; i--) {
-    x[i] = x[i - 1];
+      x[i] = x[i - 1];
   }
   x[0] = adcValue;
-  
+
   // Calculating the output of the filter
   output = 0.0;
   for (int i = 0; i < ORDER; i++) {
-    output += h[i] * x[i];
+      output += h[i] * x[i];
   }
-  
+
   analogWrite(OUTPUT_PIN, output);
-  delay(SAMPLING_RATE);
 }
