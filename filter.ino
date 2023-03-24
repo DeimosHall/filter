@@ -26,6 +26,8 @@ void setup() {
       h[i] = i + 1.0;
   }
 
+  Serial.println("CPU Freq: " + String(ESP.getCpuFreqMHz()) + " MHz");
+
   for (int i = 0; i < 10; i++) {
     speedTest();
   }
