@@ -20,11 +20,13 @@ void setup() {
   for (int i = 0; i < ORDER; i++) {
       h[i] = i + 1.0;
   }
+
+  speedTest();
 }
 
 void loop() {
-  filter();
-  delayMicroseconds(SAMPLING_RATE);
+  // filter();
+  // delayMicroseconds(SAMPLING_RATE);
 }
 
 void filter() {
@@ -43,4 +45,11 @@ void filter() {
   }
 
   analogWrite(OUTPUT_PIN, output);
+}
+
+void speedTest() {
+  unsigned long start = micros();
+  filter();
+  unsigned long end = micros();
+  Serial.println("Time: " + String(end - start) + " microseconds");
 }
