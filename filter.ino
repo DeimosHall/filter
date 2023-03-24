@@ -1,13 +1,16 @@
-#define SIGNAL_PIN 33
-#define OUTPUT_PIN 25
+// #define SIGNAL_PIN 33
+// #define OUTPUT_PIN 25
 #define ORDER 32
 #define SAMPLING_RATE 25 // microseconds
+
+const int SIGNAL_PIN = 33;
+const int OUTPUT_PIN = 25;
 
 // The filter coefficients
 float h[ORDER];
 float x[ORDER];
 float output = 0.0;
-float adcValue = 0.0;
+int adcValue = 0.0;
 
 void setup() {
   Serial.begin(115200);
@@ -23,7 +26,9 @@ void setup() {
       h[i] = i + 1.0;
   }
 
-  speedTest();
+  for (int i = 0; i < 10; i++) {
+    speedTest();
+  }
 }
 
 void loop() {
